@@ -14,7 +14,7 @@ class BrandResource extends JsonResource
             'name'         => $this->name,
             'category'     => new CategoryResource($this->getCategory),
             'description'  => $this->description,
-            'created_by'   => $this->getAuthUser->name,
+            // 'created_by'   => $this->getAuthUser->name,
         ];
     }
 }

@@ -15,7 +15,7 @@ use App\Models\PurchaseReturn;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -29,14 +29,14 @@ class DashboardController extends Controller
         $staffProductCount = [];
         $staffSaleCount = [];
         $staffPurchaseCount = [];
-        if(Auth::user()->user_type != 1){
-            $staffProductCount = Product::where('created_by', Auth::user()->id)->count(); 
+        if (Auth::user()->user_type != 1) {
+            $staffProductCount = Product::where('created_by', Auth::user()->id)->count();
         }
 
-        if(Auth::user()->user_type != 1){
+        if (Auth::user()->user_type != 1) {
             $staffSaleCount = Sale::where('created_by', Auth::user()->id)->count();
         }
-        if(Auth::user()->user_type != 1){
+        if (Auth::user()->user_type != 1) {
             $staffPurchaseCount = Purchase::where('created_by', Auth::user()->id)->count();
         }
 

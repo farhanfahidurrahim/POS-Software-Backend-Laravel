@@ -25,7 +25,7 @@ class BrandRequest extends FormRequest
     {
         return [
             'name'        => 'required|string|max:255',
-            'category_id' => 'required|integer',
+            'category_id' => 'nullable|integer',
             'description' => 'nullable|string',
         ];
     }

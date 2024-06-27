@@ -24,10 +24,10 @@ class BrandController extends Controller
     {
         try {
             $brand = new Brand();
-            $brand->category_id = $request->category_id;
+            // $brand->category_id = $request->category_id;
             $brand->name = $request->name;
             $brand->description = $request->description;
-            $brand->created_by = Auth::id();
+            $brand->created_by = 1;
             $brand->save();
 
             return response()->json(['message' => 'Brand created successfully', 'data' => new BrandResource($brand)], 200);
