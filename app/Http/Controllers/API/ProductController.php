@@ -29,7 +29,7 @@ class ProductController extends Controller
         //     $products = Product::latest()->get();
         // }
 
-        $products = Product::latest()->get();
+        $products = Product::latest()->paginate(10);
 
         if ($products->isEmpty()) {
             return response()->json(['message' => 'No Product found'], 200);
@@ -48,49 +48,32 @@ class ProductController extends Controller
             }
             $product->name = $request->name;
             $product->detail = $request->detail;
-            //create random sku with name
-            $baseName = Str::of($request->name)->slug('-');
-            $randomNumber = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
-            $product->sku = $baseName . $randomNumber;
-            $product->unit_id = $request->unit_id;
             $product->brand_id = $request->brand_id;
-            $product->sub_unit_ids = $request->sub_unit_ids;
             $product->category_id = $request->category_id;
-            $product->sub_category_id = $request->sub_category_id;
             $product->type = $request->type;
             $product->status = $request->status;
-            $product->created_by = Auth::user()->id;
+            $product->created_by = "1";
             $product->save();
 
             if ($request->type == 'single') {
-                // Create a variant for single products
-                // $variation_template_name = VariationTemplate::find($request->variation_template_id[0]);
-                // $variation_template_value = VariationValueTemplate::find($request->variation_value_id[0]);
 
-                $variation_template_name = $request->variation_template_id[0] ? VariationTemplate::find($request->variation_template_id[0]) : null;
-                // $variation_template_value = $request->variation_value_id[0] ? VariationValueTemplate::find($request->variation_value_id[0]) : null;
+                // $variation_template_name = $request->variation_template_id[0] ? VariationTemplate::find($request->variation_template_id[0]) : null;
                 $variation_template_value = "1";
 
                 $variantData = new Variation();
                 $variantData->product_id = $product->id;
                 $variantData->brand_id = $product->brand_id;
                 $variantData->category_id = $product->category_id;
-                $variantData->sub_sku = $request->sku;
-                // $variantData->name = $product->name . "-" . $variation_template_name->name . "-" . $variation_template_value->name;
-                // $variantData->name = $product->name . "-" . optional($variation_template_value)->name;
                 $variantData->name = $product->name;
                 $variantData->product_barcode = Str::random(15);
                 $variantData->default_purchase_price = $request->default_purchase_price[0];
-                $variantData->profit_percent = $request->profit_percent[0];
+                // $variantData->profit_percent = $request->profit_percent[0];
                 $variantData->default_sell_price = $request->default_sell_price[0];
-                $variantData->variation_value_id = $request->variation_value_id[0];
-                $variantData->variation_template_id = $request->variation_template_id[0];
+                // $variantData->variation_value_id = $request->variation_value_id[0];
+                // $variantData->variation_template_id = $request->variation_template_id[0];
                 $variantData->stock_amount = isset($request->stock_amount[0]) ? $request->stock_amount[0] : null;
                 $variantData->alert_quantity = $request->alert_quantity[0];
-                if ($request->hasFile('images')) {
-                    $filename = $this->uploadOne($request->images[0], 445, 534, config('imagepath.product_variation'));
-                    $variantData->images = $filename;
-                }
+                $variantData->images = $product->image;
                 $variantData->save();
             } elseif ($request->type == 'variable') {
 
@@ -121,7 +104,10 @@ class ProductController extends Controller
             return response()->json(['message' => 'Product created successfully', 'data' => new ProductResource($product)], 200);
         } catch (\Exception $e) {
             // Handle the exception here
-            return response()->json(['message' => 'An error occurred: ' . $e->getMessage()], 500);
+            return response()->json([
+                'message' => 'An error occurred: ' . $e->getMessage(),
+                'line' => $e->getLine(),
+            ], 500);
         }
     }
 

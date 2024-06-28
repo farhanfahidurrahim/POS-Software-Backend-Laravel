@@ -36,6 +36,11 @@ class RegisterController extends BaseController
 
     public function login(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
             $success['token'] =  $user->createToken('MyApp')->plainTextToken;
@@ -44,7 +49,13 @@ class RegisterController extends BaseController
 
             return $this->sendResponse($success, 'User login successfully.');
         } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return response()->json([
+                'status' => "error",
+                'message' => 'Login Failed',
+                'errors' => [
+                'email' => ['Invalid Credentials.']
+                ]
+            ], 422);
         }
     }
 

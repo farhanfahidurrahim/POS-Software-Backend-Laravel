@@ -12,8 +12,7 @@ class BrandController extends Controller
 {
     public function index()
     {
-        // $brands = Brand::latest()->get();
-        $brands = Brand::orderBy('name', 'asc')->get();
+        $brands = Brand::orderBy('name', 'asc')->paginate(10);
         if($brands->isEmpty()){
             return response()->json(['message' => 'No brands found'], 200);
         }
@@ -24,7 +23,7 @@ class BrandController extends Controller
     {
         try {
             $brand = new Brand();
-            // $brand->category_id = $request->category_id;
+            $brand->category_id = $request->category_id;
             $brand->name = $request->name;
             $brand->description = $request->description;
             $brand->created_by = 1;

@@ -13,14 +13,8 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with(['children' => function ($query) {
-            $query->orderBy('name', 'asc');
-        }])
-            ->where('parent_id', null)
-            ->orderBy('name', 'asc')
-            ->get();
-
-        if ($categories->isEmpty()) {
+        $categories = Category::orderBy('name', 'asc')->paginate(10);
+        if($categories->isEmpty()){
             return response()->json(['message' => 'No category found'], 200);
         }
         return CategoryResource::collection($categories);

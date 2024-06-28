@@ -12,9 +12,12 @@ class BrandResource extends JsonResource
         return [
             'id'           => $this->id,
             'name'         => $this->name,
-            'category'     => new CategoryResource($this->getCategory),
+            'category'     => [
+                'id' => $this->getCategory->id,
+                'name' => $this->getCategory->name
+            ],
             'description'  => $this->description,
-            // 'created_by'   => $this->getAuthUser->name,
+            'created_by'   => $this->getAuthUser->name,
         ];
     }
 }
