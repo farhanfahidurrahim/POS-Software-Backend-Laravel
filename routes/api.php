@@ -147,6 +147,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('all-variations', [VariationController::class, 'allVariations']);
     Route::get('paginate-variations', [VariationController::class, 'paginateVariations']);
     Route::get('customer-list', [CustomerController::class, 'customerList']);
+    Route::get('customer-search/{phoneNumber}', [CustomerController::class, 'customerSearchPhoneNumber']);
 
     /*
     |--------------------------------------------------------------------------

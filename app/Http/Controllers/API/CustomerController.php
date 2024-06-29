@@ -132,4 +132,19 @@ class CustomerController extends BaseController
         $customer->delete();
         return $this->sendResponse([], 'Customer Deleted Successfully!');
     }
+
+    // Customer Search Based On Phone Number
+    public function customerSearchPhoneNumber(Request $request, $phoneNumber)
+    {
+        if (!empty($phoneNumber)) {
+
+            $customer = Customer::where("phone_number", "like", "%{$phoneNumber}%")->get();
+            if ($customer->isEmpty()) {
+                return response()->json([
+                    'message' => "No Searching Data Found!"
+                ], 404);
+            }
+            return CustomerResource::collection($customer);
+        }
+    }
 }

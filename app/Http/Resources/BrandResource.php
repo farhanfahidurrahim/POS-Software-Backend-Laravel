@@ -13,8 +13,8 @@ class BrandResource extends JsonResource
             'id'           => $this->id,
             'name'         => $this->name,
             'category'     => [
-                'id' => $this->getCategory->id,
-                'name' => $this->getCategory->name
+                'id' => $this->getCategory->id ?? "--",
+                'name' => $this->getCategory->name ?? "--",
             ],
             'description'  => $this->description,
             'created_by'   => $this->getAuthUser->name,

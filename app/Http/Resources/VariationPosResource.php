@@ -21,7 +21,7 @@ class VariationPosResource extends JsonResource
             'default_sell_price'       => $this->default_sell_price,
             'stock_amount'             => $this->stock_amount,
             'alert_quantity'           => $this->alert_quantity,
-            'variation_template_value' => $this->variationValueTemplate->name,
+            'variation_template_value' => $this->variationValueTemplate->name ?? '',
             'brand'                    => $this->getBrand ? [
                                             'id'   => $this->getBrand->id,
                                             'name' => $this->getBrand->name,
