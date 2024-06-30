@@ -543,22 +543,6 @@ class SaleController extends Controller
             $sale->note                        = $request->note;
             $sale->created_by                  = "1";
 
-            $discountAmounts = [];
-            $sub_totals = 0;
-
-            /*____________________Discount on Per Product & SubTotal____________________*/
-
-            // foreach ($request->quantity as $key => $quantity) {
-            //     $withDiscountPrice = $request->unit_price[$key] - $request->unit_price[$key] * ($request->discount_percentage[$key] / 100);
-            //     $discountAmount = $quantity * ($request->unit_price[$key] * ($request->discount_percentage[$key] / 100));
-            //     $discountAmounts[] = $discountAmount;
-
-            //     $sub_totals += $quantity * $withDiscountPrice;
-            // }
-            // $sale->discount_amount = json_encode($discountAmounts);
-
-            $sale->discount_amount = json_encode($request->discount_amount);
-
             $sale->sub_totals = $request->sub_totals;
 
             /*____________________Total Amount & Paid Amount & Payment Status____________________*/
