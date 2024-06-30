@@ -35,7 +35,7 @@ class SaleRequest extends FormRequest
             'quantity' => 'required|array|min:1',
             'discount_percentage' => 'nullable|array',
             'discount_amount' => 'nullable|array',
-            'total_amount' => 'nullable|regex:/^\d{1,12}(\.\d{2,2})?$/',
+            'total_amount' => 'required|regex:/^\d{1,12}(\.\d{2,2})?$/',
             'paid_amount' => 'nullable|regex:/^\d{1,12}(\.\d{2,2})?$/',
             'due_amount' => 'nullable|regex:/^\d{1,12}(\.\d{2,2})?$/',
             'payment_status' => 'nullable|string',

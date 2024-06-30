@@ -541,7 +541,7 @@ class SaleController extends Controller
             $sale->delivery_method             = $request->delivery_method;
             $sale->sale_from                   = $request->sale_from;
             $sale->note                        = $request->note;
-            $sale->created_by                  = Auth::user()->id;
+            $sale->created_by                  = "1";
 
             $discountAmounts = [];
             $sub_totals = 0;
@@ -725,7 +725,7 @@ class SaleController extends Controller
             DB::rollback();
 
             return response()->json([
-                'message' => 'Error creating sale: ' . $e->getMessage(),
+                'message' => 'Error creating sale: ' . $e->getMessage() . $e->getLine(),
             ], 500);
         }
     }
