@@ -23,12 +23,13 @@ class CustomerRequest extends FormRequest
         $customerId = $this->route('id');
         $rules = [
             'name' => 'required|string',
-            'email' => 'nullable|email|unique:customers,email' . $customerId,
+            'email' => 'required|email|unique:customers,email' . $customerId,
             'phone_number' => [
                 'required',
                 'regex:/^(\+?88)?01[3-9]\d{8}$/',
                 'unique:customers,phone_number,' . $customerId,
             ],
+            'location' => 'required',
             // 'city_id' => 'required',
             // 'city_name' => 'nullable',
             // 'zone_id' => 'required',

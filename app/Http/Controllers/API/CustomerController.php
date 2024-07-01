@@ -24,10 +24,9 @@ class CustomerController extends BaseController
     {
         $customer = Customer::latest()->paginate(20);
 
-        // return $this->sendResponse(CustomerResource::collection($customer), 'Customer retrieved successfully!');
-        return response()->json([
-            'data' => $customer,
-        ]);
+        return CustomerResource::collection($customer);
+        // return $this->sendResponse("Customer retrieved successfully!", CustomerResource::collection($customer),);
+        // return response()->json($customer);
     }
 
 

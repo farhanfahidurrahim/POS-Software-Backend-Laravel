@@ -43,6 +43,7 @@ use App\Http\Controllers\API\SaleReturnPaymentController;
 use App\Http\Controllers\API\VariationTemplateController;
 use App\Http\Controllers\API\SupplierTransactionController;
 use App\Http\Controllers\API\PurchasePaymentReturnController;
+use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\StaffController;
 use App\Http\Controllers\API\SearchFilterController;
 
@@ -61,11 +62,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('login', [RegisterController::class, 'login']);
     Route::post('update/{id}', [RegisterController::class, 'update']);
-});
-
-Route::group(['prefix' => 'v1'], function () {
-    Route::post('farhan', [BranchController::class, 'register']);
-    Route::post('login', [RegisterController::class, 'login']);
 });
 
 // Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
@@ -151,9 +147,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Search Filter Routes
+    | Report, Search Filter : Routes
     |--------------------------------------------------------------------------
     */
+    Route::get('report/{model}', [ReportController::class, 'report']);
     Route::get('search/{keyword}', [SearchFilterController::class, 'search']);
     Route::get('show-entries/{number}', [SearchFilterController::class, 'showEntries']);
     Route::get('date-filters/{model}', [SearchFilterController::class, 'dateFilters']);
