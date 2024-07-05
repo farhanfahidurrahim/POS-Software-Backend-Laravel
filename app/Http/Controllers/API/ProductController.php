@@ -22,13 +22,6 @@ class ProductController extends Controller
     use UploadAble;
     public function index()
     {
-        // if (Auth::user()->user_type == 2) {
-        //     $products = Product::where('created_by', Auth::user()->id)->latest()->get();
-        // } else {
-        //     // For admins or other user types, retrieve all sales data
-        //     $products = Product::latest()->get();
-        // }
-
         $products = Product::latest()->paginate(10);
 
         if ($products->isEmpty()) {
@@ -74,6 +67,10 @@ class ProductController extends Controller
                 $variantData->stock_amount = isset($request->stock_amount[0]) ? $request->stock_amount[0] : null;
                 $variantData->alert_quantity = $request->alert_quantity[0];
                 $variantData->images = $product->image;
+                if ($request->hasFile('image')) {
+                    $filename = $this->uploadOne($request->image, 445, 534, config('imagepath.product_variation'));
+                    $variantData->images = $filename;
+                }
                 $variantData->save();
             } elseif ($request->type == 'variable') {
 
@@ -296,11 +293,11 @@ class ProductController extends Controller
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
-        $productVariations = $product->productVariations;
-        foreach ($productVariations as $productVariation) {
-            $productVariation->variations()->delete();
-        }
-        $product->productVariations()->delete();
+        // $productVariations = $product->productVariations;
+        // foreach ($productVariations as $productVariation) {
+        //     $productVariation->variations()->delete();
+        // }
+        // $product->productVariations()->delete();
         $product->delete();
 
         return response()->json(['message' => 'Product and related data deleted successfully'], 200);

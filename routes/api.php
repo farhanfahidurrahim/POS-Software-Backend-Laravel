@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\UserController2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Contracts\Role;
@@ -46,18 +47,13 @@ use App\Http\Controllers\API\PurchasePaymentReturnController;
 use App\Http\Controllers\API\ReportController;
 use App\Http\Controllers\API\StaffController;
 use App\Http\Controllers\API\SearchFilterController;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
-|
 */
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-//
-
 Route::group(['prefix' => 'v1'], function () {
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('login', [RegisterController::class, 'login']);
@@ -66,22 +62,25 @@ Route::group(['prefix' => 'v1'], function () {
 
 // Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
 Route::group(['prefix' => 'v1'], function () {
-    // admin roles
-    Route::get('get_roles', [\App\Http\Controllers\API\RoleController::class, 'index'])->name('user.role');
-    Route::get('get_permissions', [\App\Http\Controllers\API\RoleController::class, 'permission'])->name('user.permission');
-    Route::post('store/role_permission', [\App\Http\Controllers\API\RoleController::class, 'store'])->name('role.permission');
-    Route::get('role_permission/{id}', [\App\Http\Controllers\API\RoleController::class, 'edit'])->name('role_permission');
-    Route::put('update_role_permission/{id}', [\App\Http\Controllers\API\RoleController::class, 'update'])->name('update_role_permission');
+    /*
+    |--------------------------------------------------------------------------
+    | User Routes
+    |--------------------------------------------------------------------------
+    */
+    Route::apiResource('users', UserController::class);
+    Route::get('users-custom', [UserController::class, 'custom']);
 
-    // admin user module
-    Route::get('user/list', [\App\Http\Controllers\API\UserController::class, 'allUser'])->name('admin.user');
-    Route::get('user/role', [\App\Http\Controllers\API\UserController::class, 'get_role'])->name('all_role');
-    Route::post('user/store', [\App\Http\Controllers\API\UserController::class, 'storeAdminUser'])->name('admin.user.store');
-    Route::get('user/edit/{id}', [\App\Http\Controllers\API\UserController::class, 'editAdminUser'])->name('admin.user.edit');
-    Route::put('user/update/{id}', [\App\Http\Controllers\API\UserController::class, 'updateAdminUser'])->name('admin.user.update');
-    Route::post('user/profile/update', [\App\Http\Controllers\API\UserController::class, 'profileUpdate']);
-    Route::post('user/profile/password-change', [\App\Http\Controllers\API\UserController::class, 'profilePasswordChange']);
-
+    Route::get('user/list', [UserController2::class, 'allUser']);
+    Route::post('user/store', [UserController::class, 'storeAdminUser']);
+    Route::get('user/edit/{id}', [UserController2::class, 'editAdminUser']);
+    Route::put('user/update/{id}', [UserController2::class, 'updateAdminUser']);
+    Route::post('user/profile/update', [UserController2::class, 'profileUpdate']);
+    Route::post('user/profile/password-change', [UserController2::class, 'profilePasswordChange']);
+    /*
+    |--------------------------------------------------------------------------
+    | Others Routes
+    |--------------------------------------------------------------------------
+    */
     Route::apiResource('account', AccountController::class);
     Route::apiResource('attendance', AttendanceController::class);
     Route::apiResource('branches', BranchController::class);
@@ -155,18 +154,4 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('show-entries/{number}', [SearchFilterController::class, 'showEntries']);
     Route::get('date-filters/{model}', [SearchFilterController::class, 'dateFilters']);
     Route::get('csv-download/{model}', [SearchFilterController::class, 'csvDownload']);
-
-    /*
-    |--------------------------------------------------------------------------
-    | Pathao Courier API
-    |--------------------------------------------------------------------------
-    */
-    Route::get('get-city', [PathaoCourierApiController::class, 'getCities']);
-    Route::get('get-zone/{city_id}', [PathaoCourierApiController::class, 'getZones']);
-    Route::get('get-area/{zone_id}', [PathaoCourierApiController::class, 'getAreas']);
-
-
-    Route::group(['middleware' => 'auth:sanctum', 'prefix' => 'my-account', 'as' => 'my-account.'], function () {
-        //write admin api
-    });
 });
