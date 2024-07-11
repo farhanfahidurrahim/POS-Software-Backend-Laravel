@@ -47,7 +47,7 @@ class RegisterController extends BaseController
             $success['name'] =  $user->name;
             $success['user'] =  $user;
 
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse('User login successfully.', $success);
         } else {
             return response()->json([
                 'status' => "error",

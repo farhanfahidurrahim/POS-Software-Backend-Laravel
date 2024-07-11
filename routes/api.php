@@ -60,8 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('update/{id}', [RegisterController::class, 'update']);
 });
 
-// Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
-Route::group(['prefix' => 'v1'], function () {
+ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     /*
     |--------------------------------------------------------------------------
     | User Routes
