@@ -127,7 +127,6 @@ class UserController2 extends Controller
         }
 
         $profile->name = $request->name;
-        $profile->email = $request->email;
         $profile->phone_number = $request->phone_number;
 
         // Delete old image if it exists
@@ -160,7 +159,7 @@ class UserController2 extends Controller
         $current_password = $request->current_password;
 
         if (!Hash::check($current_password, $profile->password)) {
-            return response()->json(['message' => 'Your Password is incorrect'], 422);
+            return response()->json(['message' => 'Incorrect credentials'], 422);
         }
 
         $profile->password = Hash::make($request->password);
